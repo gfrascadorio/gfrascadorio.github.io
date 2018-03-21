@@ -28,7 +28,7 @@ plugins:
   - jekyll-sitemap
   - jekyll-paginate
   - jemoji
-remote-theme: flexible-jekyll
+remote_theme: flexible-jekyll
 
 paginate: 8
 paginate_path: "/page/:num"
