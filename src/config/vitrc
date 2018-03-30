@@ -1,0 +1,29 @@
+# Example
+# https://github.com/linuxcaffe/vitrc/blob/master/.vitrc
+
+# Open notes of current task
+map o=:!wr taskopen %TASKID<Return>
+
+# Set context. 'none' clears
+map @=:!r task context 
+
+# Follows
+map >=:!wr task %TASKID mod depends:
+map &=:!w task tags<Return>
+map ?=:help<Return>
+map .=:!wr vi ~/.taskrc
+map i=:!w task info %TASKID<Return>
+
+# Start and stop work on selected task
+map -=:!r task %TASKID stop<Return>
+map +=:!r task %TASKID start<Return>
+
+
+# Precedes
+map <=:!wr task mod depends:%TASKID 
+
+map F=f proj:
+map =
+map =
+map q=Q
+
