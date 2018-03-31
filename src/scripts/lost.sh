@@ -1,11 +1,17 @@
-#!/bin/bash 
+#!/bin/bash  -x
+set -o errexit
 
 ##
-# lost (missing)
-#       Find the files in inventory2 missing from inventory1
+# lost - identify missing files
+#
+#       Create a file system inventory capable of quickly finding
+#       the files in one inventory that are missing from another.
+#       Also useful for locating files on off-line detachable media.
+#       This is the inverse of the 'find duplicates' use case 
+#       addressed by fdupes(1).
 #       
-#       lost -from file1 file2
-#       lost -make [ -f ] root [inventory]
+#       lost -make [ -f ] dir [inventory]
+#       lost -from inventory1 inventory2
 #       cd root; md5sum -c inventory
 #
 # HINTS
@@ -22,14 +28,12 @@
 #       cksum of the 'ls -sS' of the root'
 #
 
-MD5DEEP="/home/gaf/src/md5deep-3.4/md5deep/md5deep"
-
 usage()
 {
     echo ""
     echo "usage: $1"
-    echo "   lost -from file1 file2           -- files in f2 missing from f1"
     echo "   lost -make [ -f ] root [foo.inv] -- make [force] inventory file"
+    echo "   lost -from inv1 inv2             -- files in inv2 missing from inv1"
     echo "   lost -dups foo.inv               -- list dups in inventory"
     echo "   lost -s 100g                     -- skip files larger than this"
     echo ""
@@ -54,6 +58,11 @@ usage()
 
 if [ $# -lt 2 ]; then
     usage "too few arguments:$*" 
+fi
+
+if ! type md5deep > /dev/null; then
+    echo "needs md5deep"
+    exit 1
 fi
 
 unset nflag               # like make -n: show
@@ -108,32 +117,37 @@ done
 
 [ $# -ge 1 ] || usage "invalid arguments: $*"
 
+# Approximate a unique name
 rootfold="$1"
 fsid=$(ls -sS "$rootfold" | egrep -v '(^total|inv.txt)' | cksum | cut -d ' ' -f 1)
 
 if [ $# -ge 2 ]; then
     invfile="$2"
+    invdir="$(dirname $invfile)"
     stem="$(basename "$2" | cut -d. -f 1 | tr -d ' ')"
 else
+    invdir="."
     stem="$(basename "$1" | cut -d. -f 1 | tr -d ' ')"
 fi
 
-invfile="$stem.$fsid.inv.txt"
+invfile="$invdir/$stem.$fsid.inv.txt"
 
 if [ -z "$fflag" -a -f "$invfile" ]; then
-    usage "$invfile: already exists, use -f"
+    echo "$invfile: already exists, use -f"
+    exit 1
 fi
 
 if [ -n "$nflag" ]; then
-    echo $MD5DEEP $mdflags $skflags -o f -l -r "$rootfold" \> "$invfile"
+    echo md5deep $mdflags $skflags -o f -l -r "$rootfold" \> "$invfile"
 
 elif [ -n "$vflag" ]; then
-    $MD5DEEP $mdflags $skflags -o f -l -r "$rootfold" | \
+    echo md5deep $mdflags $skflags -o f -l -r "$rootfold" \> "$invfile"
+    md5deep $mdflags $skflags -o f -l -r "$rootfold" | \
         grep -v '\.inv.txt' | \
         tee /dev/stderr | sort -k1 > "$invfile"
 else
-    echo $MD5DEEP $mdflags $skflags -o f -l -r "$rootfold" 
-    $MD5DEEP $mdflags $skflags -o f -l -r "$rootfold" | \
+    echo md5deep $mdflags $skflags -o f -l -r "$rootfold" \> "$invfile"
+    md5deep $mdflags $skflags -o f -l -r "$rootfold" | \
         grep -v '\.inv.txt' | \
         sort -k1 > "$invfile"
 fi
