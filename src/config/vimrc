@@ -1,0 +1,4 @@
+" Recall that nvim expects to find its init
+" in the ~/.config/nvim/init.vim, so we must leave
+" stuff there and call it from here
+source ~/.config/nvim/init.vim
