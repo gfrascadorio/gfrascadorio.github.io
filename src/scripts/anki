@@ -1,0 +1,26 @@
+#!/bin/bash
+
+##
+# Start Anki and import file.
+#
+# NOTE
+#    Anki prefers to be running before importing the file, hence the
+#    use of pgrep / sleep 
+
+Darwin() {
+   open -a /Applications/Anki.app "$@"
+}
+
+Linux() {
+    ANKI_BIN="/usr/local/bin/anki"
+    if pgrep -a $ANKI_BIN; then
+        $ANKI_BIN "$@"
+    else
+        $ANKI_BIN &
+        sleep 2
+        $ANKI_BIN "$@"
+    fi
+}
+
+eval $(uname) "$@"
+
