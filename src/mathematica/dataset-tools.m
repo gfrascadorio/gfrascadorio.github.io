@@ -1,12 +1,5 @@
 
-ClearAll[ruleTableMaker, assocTableMaker, datasetMaker]
-ruleListMaker[colNames_] := Thread[colNames -> #] & /@ # &
-assocListMaker[colNames_] := 
-    Association@Thread[colNames -> #] & /@ # &
-datasetMaker[colNames_] := Dataset[assocListMaker[colNames]@#] &
-
-Block[ {$AssertFunction},
-        (* Temporarily reassign $AssertFunction *)
-        $AssertFunction = Message[Assert::asrtf, HoldForm@@#]&
-        Assert[False];
-]
+ClearAll[ruleMaker, assocMaker, datasetMaker]
+ruleMaker[colNames_] := (Thread[colNames -> #]& /@ #) &
+assocMaker[colNames_] := (Association@Thread[colNames -> #] & /@ #) &
+datasetMaker[colNames_] := (Dataset[assocMaker[colNames]@#]) &
