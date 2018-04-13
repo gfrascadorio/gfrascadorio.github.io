@@ -1,0 +1,15 @@
+In[116]:= <<"generateData.m"
+During evaluation of In[116]:= StringJoin::string: String expected at position 1 in (Dataset [<<1>>])<>generates n sample data points and returns them in a data fr… eturns them in a data frame.returns the inverse logit value..
+During evaluation of In[116]:= MessageName::messg: expit::usage cannot be set to (Dataset [<<1>>])<>generates n sample data points and returns them in a data fr… eturns them in a data frame.returns the inverse logit value.. It must be set to a string.
+During evaluation of In[116]:= StringJoin::string: String expected at position 1 in (Dataset [<<1>>])<>generates n sample data points and returns them in a data fr… .prints the msg to the Message stream after insertings parms.
+During evaluation of In[116]:= MessageName::messg: mlogit::usage cannot be set to (Dataset [<<1>>])<>generates n sample data points and returns them in a data fr… .prints the msg to the Message stream after insertings parms. It must be set to a string.
+During evaluation of In[116]:= StringJoin::string: String expected at position 1 in (Dataset [<<1>>])<>generates n sample data points and returns them in a data fr… rates n sample data points and returns them in a data frame..
+During evaluation of In[116]:= General::stop: Further output of StringJoin::string will be suppressed during this calculation.
+During evaluation of In[116]:= MessageName::messg: generateData::usage cannot be set to (Dataset [<<1>>])<>generates n sample data points and returns them in a data fr… rates n sample data points and returns them in a data frame.. It must be set to a string.
+During evaluation of In[116]:= General::stop: Further output of MessageName::messg will be suppressed during this calculation.
+In[111]:= mlogit["this is test `` of stuff and more ``", "fsfsf", "bar"]
+During evaluation of In[111]:= warning::msg: this is test fsfsf of stuff and more bar
+In[108]:= ?Assert
+Assert[test] represents the assertion that test is True. If assertions have been enabled, test is evaluated when the assertion is encountered. If test is not True, then an assertion failure is generated.
+Assert[test,tag] specifies a tag that will be used to identify the assertion if it fails. >>
+Message
